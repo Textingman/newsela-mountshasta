@@ -16,7 +16,7 @@ export default function PrivacyPolicy() {
           href="/"
           className="flex items-center gap-3 hover:opacity-80 transition-opacity"
         >
-          <div className="w-8 h-8 rounded-full bg-[#8b1a2e] flex items-center justify-center flex-shrink-0">
+          <div className="w-8 h-8 rounded-full bg-[#002d7c] flex items-center justify-center flex-shrink-0">
             <span className="text-white font-bold text-sm">M</span>
           </div>
           <span className="text-base font-semibold text-gray-900 tracking-tight">
@@ -99,7 +99,7 @@ export default function PrivacyPolicy() {
               HELP or contact us at{" "}
               <a
                 href="mailto:support@msusd.org"
-                className="text-[#8b1a2e] underline"
+                className="text-[#002d7c] underline"
               >
                 support@msusd.org
               </a>
@@ -145,7 +145,7 @@ export default function PrivacyPolicy() {
               information. To exercise these rights, please contact us at{" "}
               <a
                 href="mailto:support@msusd.org"
-                className="text-[#8b1a2e] underline"
+                className="text-[#002d7c] underline"
               >
                 support@msusd.org
               </a>
@@ -169,14 +169,14 @@ export default function PrivacyPolicy() {
                 Email:{" "}
                 <a
                   href="mailto:support@msusd.org"
-                  className="text-[#8b1a2e] underline"
+                  className="text-[#002d7c] underline"
                 >
                   support@msusd.org
                 </a>
               </p>
               <p>
                 Phone:{" "}
-                <a href="tel:15309263434" className="text-[#8b1a2e] underline">
+                <a href="tel:15309263434" className="text-[#002d7c] underline">
                   530-926-3434
                 </a>
               </p>
@@ -187,7 +187,7 @@ export default function PrivacyPolicy() {
         <div className="mt-10">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-sm text-[#8b1a2e] hover:underline font-medium"
+            className="inline-flex items-center gap-2 text-sm text-[#002d7c] hover:underline font-medium"
           >
             ← Back to Home
           </Link>
