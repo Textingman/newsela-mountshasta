@@ -214,10 +214,10 @@ export default function Home() {
               understand I may opt out of SMS communication by replying
               &apos;STOP&apos;. Reply HELP or email{" "}
               <a
-                href="mailto:support@msusd.org"
+                href="mailto:support@mountshastaunion.com"
                 className="text-[#002d7c] underline"
               >
-                support@msusd.org
+                support@mountshastaunion.com
               </a>{" "}
               for help. Message and Data rates may apply. Message frequency
               varies. Carriers are not liable for delayed or undelivered

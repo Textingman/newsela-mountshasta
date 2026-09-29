@@ -138,10 +138,10 @@ export default function TermsOfUse() {
               <li>
                 For help, reply <strong>HELP</strong> or email{" "}
                 <a
-                  href="mailto:support@msusd.org"
+                  href="mailto:support@mountshastaunion.com"
                   className="text-[#002d7c] underline"
                 >
-                  support@msusd.org
+                  support@mountshastaunion.com
                 </a>
                 .
               </li>
@@ -204,10 +204,10 @@ export default function TermsOfUse() {
               <p>
                 Email:{" "}
                 <a
-                  href="mailto:support@msusd.org"
+                  href="mailto:support@mountshastaunion.com"
                   className="text-[#002d7c] underline"
                 >
-                  support@msusd.org
+                  support@mountshastaunion.com
                 </a>
               </p>
               <p>

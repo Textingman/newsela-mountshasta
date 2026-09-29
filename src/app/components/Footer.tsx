@@ -27,10 +27,10 @@ export default function Footer() {
           <div className="flex items-center gap-3.5 mb-4">
             <span className="text-lg flex-shrink-0">✉</span>
             <a
-              href="mailto:support@msusd.org"
+              href="mailto:support@mountshastaunion.com"
               className="text-sm text-gray-400 hover:text-white transition-colors"
             >
-              support@msusd.org
+              support@mountshastaunion.com
             </a>
           </div>
 
