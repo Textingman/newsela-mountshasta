@@ -15,6 +15,9 @@ export default function Home() {
     smsAgreed: false,
   });
 
+  const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -27,10 +30,47 @@ export default function Home() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission here
-    console.log("Form submitted:", formData);
+    setSubmitting(true);
+
+    const payload = {
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      email: formData.email,
+      phone: formData.phone,
+      message: formData.message,
+      privacyAgreed: formData.privacyAgreed ? "Yes" : "No",
+      smsAgreed: formData.smsAgreed ? "Yes" : "No",
+    };
+
+    try {
+      const response = await fetch(
+        "https://formspree.io/f/cb9f569e10c843168aac66855faf95c2",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      if (response.ok) {
+        setSubmitted(true);
+        setFormData({
+          firstName: "",
+          lastName: "",
+          email: "",
+          phone: "",
+          message: "",
+          privacyAgreed: false,
+          smsAgreed: false,
+        });
+      }
+    } catch (error) {
+      console.error("Form submission error:", error);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -73,168 +113,177 @@ export default function Home() {
         id="contact"
         className="flex-1 max-w-3xl w-full mx-auto px-5 py-9"
       >
-        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-          {/* First Name */}
-          <div className="flex flex-col gap-1.5">
-            <label
-              htmlFor="firstName"
-              className="text-sm font-medium text-gray-900"
-            >
-              First Name
-            </label>
-            <input
-              type="text"
-              id="firstName"
-              name="firstName"
-              placeholder="First Name"
-              value={formData.firstName}
-              onChange={handleChange}
-              className="w-full px-4 py-3.5 border border-gray-300 rounded-md text-base text-gray-900 placeholder-gray-400 outline-none focus:border-[#002d7c] transition-colors"
-            />
+        {submitted ? (
+          <div className="flex flex-col items-center justify-center py-16 gap-4 text-center">
+            <div className="text-5xl">✅</div>
+            <h2 className="text-2xl font-semibold text-gray-900">Thank you!</h2>
+            <p className="text-gray-600">Your message has been submitted successfully. We&apos;ll be in touch soon.</p>
           </div>
-
-          {/* Last Name */}
-          <div className="flex flex-col gap-1.5">
-            <label
-              htmlFor="lastName"
-              className="text-sm font-medium text-gray-900"
-            >
-              Last Name
-            </label>
-            <input
-              type="text"
-              id="lastName"
-              name="lastName"
-              placeholder="Last Name"
-              value={formData.lastName}
-              onChange={handleChange}
-              className="w-full px-4 py-3.5 border border-gray-300 rounded-md text-base text-gray-900 placeholder-gray-400 outline-none focus:border-[#002d7c] transition-colors"
-            />
-          </div>
-
-          {/* Email */}
-          <div className="flex flex-col gap-1.5">
-            <label
-              htmlFor="email"
-              className="text-sm font-medium text-gray-900"
-            >
-              Email Address
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              placeholder="Email Address"
-              value={formData.email}
-              onChange={handleChange}
-              className="w-full px-4 py-3.5 border border-gray-300 rounded-md text-base text-gray-900 placeholder-gray-400 outline-none focus:border-[#002d7c] transition-colors"
-            />
-          </div>
-
-          {/* Phone */}
-          <div className="flex flex-col gap-1.5">
-            <label
-              htmlFor="phone"
-              className="text-sm font-medium text-gray-900"
-            >
-              Phone Number
-            </label>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              placeholder="Phone number"
-              value={formData.phone}
-              onChange={handleChange}
-              className="w-full px-4 py-3.5 border border-gray-300 rounded-md text-base text-gray-900 placeholder-gray-400 outline-none focus:border-[#002d7c] transition-colors"
-            />
-          </div>
-
-          {/* Message */}
-          <div className="flex flex-col gap-1.5">
-            <label
-              htmlFor="message"
-              className="text-sm font-medium text-gray-900"
-            >
-              Message
-            </label>
-            <textarea
-              id="message"
-              name="message"
-              placeholder="Message"
-              rows={5}
-              value={formData.message}
-              onChange={handleChange}
-              className="w-full px-4 py-3.5 border border-gray-300 rounded-md text-base text-gray-900 placeholder-gray-400 outline-none focus:border-[#002d7c] transition-colors resize-y"
-            />
-          </div>
-
-          {/* Privacy Policy Checkbox */}
-          <div className="flex items-start gap-3">
-            <input
-              type="checkbox"
-              id="privacyAgreed"
-              name="privacyAgreed"
-              checked={formData.privacyAgreed}
-              onChange={handleChange}
-              className="mt-0.5 w-4.5 h-4.5 flex-shrink-0 accent-[#002d7c] cursor-pointer"
-            />
-            <label
-              htmlFor="privacyAgreed"
-              className="text-sm text-gray-600 leading-relaxed cursor-pointer"
-            >
-              I have read and agree to the{" "}
-              <a href="/privacy-policy" className="text-[#002d7c] underline">
-                Privacy Policy
-              </a>{" "}
-              and{" "}
-              <a href="/terms-of-use" className="text-[#002d7c] underline">
-                Terms of Use
-              </a>
-              .
-            </label>
-          </div>
-
-          {/* SMS Consent Checkbox */}
-          <div className="flex items-start gap-3">
-            <input
-              type="checkbox"
-              id="smsAgreed"
-              name="smsAgreed"
-              checked={formData.smsAgreed}
-              onChange={handleChange}
-              className="mt-0.5 w-4.5 h-4.5 flex-shrink-0 accent-[#002d7c] cursor-pointer"
-            />
-            <label
-              htmlFor="smsAgreed"
-              className="text-sm text-gray-600 leading-relaxed cursor-pointer"
-            >
-              By checking this box and submitting this form, you agree to
-              receive transactional account alerts and customer care text messages from Mount Shasta Union School District. I
-              understand I may opt out of SMS communication by replying
-              &apos;STOP&apos;. Reply HELP or email{" "}
-              <a
-                href="mailto:support@mountshastaunion.com"
-                className="text-[#002d7c] underline"
+        ) : (
+          <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+            {/* First Name */}
+            <div className="flex flex-col gap-1.5">
+              <label
+                htmlFor="firstName"
+                className="text-sm font-medium text-gray-900"
               >
-                support@mountshastaunion.com
-              </a>{" "}
-              for help. Message and Data rates may apply. Message frequency
-              varies. Carriers are not liable for delayed or undelivered
-              messages. Opting in to SMS is optional and not required to submit
-              this form or use our services. All messages will be handled by
-              Mount Shasta Union School District.
-            </label>
-          </div>
+                First Name
+              </label>
+              <input
+                type="text"
+                id="firstName"
+                name="firstName"
+                placeholder="First Name"
+                value={formData.firstName}
+                onChange={handleChange}
+                className="w-full px-4 py-3.5 border border-gray-300 rounded-md text-base text-gray-900 placeholder-gray-400 outline-none focus:border-[#002d7c] transition-colors"
+              />
+            </div>
 
-          {/* Submit Button */}
-          <button
-            type="submit"
-            className="w-full py-4 bg-[#002d7c] hover:bg-[#001f5a] text-white font-semibold text-base rounded-md transition-colors duration-200 tracking-wide cursor-pointer"
-          >
-            Submit
-          </button>
-        </form>
+            {/* Last Name */}
+            <div className="flex flex-col gap-1.5">
+              <label
+                htmlFor="lastName"
+                className="text-sm font-medium text-gray-900"
+              >
+                Last Name
+              </label>
+              <input
+                type="text"
+                id="lastName"
+                name="lastName"
+                placeholder="Last Name"
+                value={formData.lastName}
+                onChange={handleChange}
+                className="w-full px-4 py-3.5 border border-gray-300 rounded-md text-base text-gray-900 placeholder-gray-400 outline-none focus:border-[#002d7c] transition-colors"
+              />
+            </div>
+
+            {/* Email */}
+            <div className="flex flex-col gap-1.5">
+              <label
+                htmlFor="email"
+                className="text-sm font-medium text-gray-900"
+              >
+                Email Address
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Email Address"
+                value={formData.email}
+                onChange={handleChange}
+                className="w-full px-4 py-3.5 border border-gray-300 rounded-md text-base text-gray-900 placeholder-gray-400 outline-none focus:border-[#002d7c] transition-colors"
+              />
+            </div>
+
+            {/* Phone */}
+            <div className="flex flex-col gap-1.5">
+              <label
+                htmlFor="phone"
+                className="text-sm font-medium text-gray-900"
+              >
+                Phone Number
+              </label>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                placeholder="Phone number"
+                value={formData.phone}
+                onChange={handleChange}
+                className="w-full px-4 py-3.5 border border-gray-300 rounded-md text-base text-gray-900 placeholder-gray-400 outline-none focus:border-[#002d7c] transition-colors"
+              />
+            </div>
+
+            {/* Message */}
+            <div className="flex flex-col gap-1.5">
+              <label
+                htmlFor="message"
+                className="text-sm font-medium text-gray-900"
+              >
+                Message
+              </label>
+              <textarea
+                id="message"
+                name="message"
+                placeholder="Message"
+                rows={5}
+                value={formData.message}
+                onChange={handleChange}
+                className="w-full px-4 py-3.5 border border-gray-300 rounded-md text-base text-gray-900 placeholder-gray-400 outline-none focus:border-[#002d7c] transition-colors resize-y"
+              />
+            </div>
+
+            {/* Privacy Policy Checkbox */}
+            <div className="flex items-start gap-3">
+              <input
+                type="checkbox"
+                id="privacyAgreed"
+                name="privacyAgreed"
+                checked={formData.privacyAgreed}
+                onChange={handleChange}
+                className="mt-0.5 w-4.5 h-4.5 flex-shrink-0 accent-[#002d7c] cursor-pointer"
+              />
+              <label
+                htmlFor="privacyAgreed"
+                className="text-sm text-gray-600 leading-relaxed cursor-pointer"
+              >
+                I have read and agree to the{" "}
+                <a href="/privacy-policy" className="text-[#002d7c] underline">
+                  Privacy Policy
+                </a>{" "}
+                and{" "}
+                <a href="/terms-of-use" className="text-[#002d7c] underline">
+                  Terms of Use
+                </a>
+                .
+              </label>
+            </div>
+
+            {/* SMS Consent Checkbox */}
+            <div className="flex items-start gap-3">
+              <input
+                type="checkbox"
+                id="smsAgreed"
+                name="smsAgreed"
+                checked={formData.smsAgreed}
+                onChange={handleChange}
+                className="mt-0.5 w-4.5 h-4.5 flex-shrink-0 accent-[#002d7c] cursor-pointer"
+              />
+              <label
+                htmlFor="smsAgreed"
+                className="text-sm text-gray-600 leading-relaxed cursor-pointer"
+              >
+                By checking this box and submitting this form, you agree to
+                receive transactional account alerts and customer care text messages from Mount Shasta Union School District. I
+                understand I may opt out of SMS communication by replying
+                &apos;STOP&apos;. Reply HELP or email{" "}
+                <a
+                  href="mailto:support@mountshastaunion.com"
+                  className="text-[#002d7c] underline"
+                >
+                  support@mountshastaunion.com
+                </a>{" "}
+                for help. Message and Data rates may apply. Message frequency
+                varies. Carriers are not liable for delayed or undelivered
+                messages. Opting in to SMS is optional and not required to submit
+                this form or use our services. All messages will be handled by
+                Mount Shasta Union School District.
+              </label>
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={submitting}
+              className="w-full py-4 bg-[#002d7c] hover:bg-[#001f5a] text-white font-semibold text-base rounded-md transition-colors duration-200 tracking-wide cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              {submitting ? "Submitting..." : "Submit"}
+            </button>
+          </form>
+        )}
       </section>
 
       <Footer />
